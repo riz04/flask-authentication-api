@@ -11,7 +11,7 @@ from user import User
 # ]
 # after importing the user class, we can simply do the following
 
-users = [User [ 1, "Bob", "asdf"]]
+users = [User(1,"Bob", "asdf")]
 
 # username_mapping = { "bob" : { 
 #         "id" : 1,

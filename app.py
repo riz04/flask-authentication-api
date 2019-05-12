@@ -3,27 +3,34 @@ from flask import Flask,request
 # resources are things that Api can return and create
 # e.g, if an api is concerned with an item, then item can be the resource
 from flask_restful import Resource, Api
+from flask_jwt import JWT, jwt_required
+
+from security import authenticate, identity
+
 
 app = Flask(__name__)
-app.secret_key = "rizul"
+app.secret_key = "rizulgit"
 
 # api will allow us to add resources to it
 # the API works with resources, and every resource has to be a class
 api = Api(app)
+
+jwt = JWT(app, authenticate, identity)
 
 items = []
 
 
 # inheriting class student from Resource
 class Item(Resource):
+    # this decorator ensures that we authenticate before get responds
+    @jwt_required()
     def get(self, name):
         # for item in items:
         #     if item["name"] == name:
         #         return item
 
         item = next(filter(lambda x : x["name"] == name, items) , None)
-        invalid_item = {"name" : item , "price" : 00.00}
-        return invalid_item, 200 if item else 404
+        return item, 200 if item else 404
 
     def post(self, name):
         error_message = {"message" : "An item with name '{}' already exists.".format(name)}
