@@ -5,6 +5,7 @@ from flask import Flask,request
 from flask_restful import Resource, Api
 
 app = Flask(__name__)
+app.secret_key = "rizul"
 
 # api will allow us to add resources to it
 # the API works with resources, and every resource has to be a class
