@@ -16,13 +16,20 @@ items = []
 # inheriting class student from Resource
 class Item(Resource):
     def get(self, name):
-        for item in items:
-            if item["name"] == name:
-                return item
-        invalid_item = {"name" : None , "price" : 00.00}
-        return invalid_item, 404
+        # for item in items:
+        #     if item["name"] == name:
+        #         return item
+
+        item = next(filter(lambda x : x["name"] == name, items) , None)
+        invalid_item = {"name" : item , "price" : 00.00}
+        return invalid_item, 200 if item else 404
 
     def post(self, name):
+        error_message = {"message" : "An item with name '{}' already exists.".format(name)}
+        if next(filter(lambda x : x["name"] == name, items) , None) is  not None:
+            return error_message, 400
+
+
         data = request.get_json()
         print(data)
         item = {"name" : name , "price" : data["price"]}
